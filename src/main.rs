@@ -12,7 +12,9 @@ fn main() {
     }
 
     println!("Idle.");
-    while STOP_SIGNAL.load(std::sync::atomic::Ordering::Relaxed) {}
+    while STOP_SIGNAL.load(std::sync::atomic::Ordering::Relaxed) {
+        std::hint::spin_loop();
+    }
 }
 
 /// Windows will execute this function in its own thread, so this effectively turns a single-threaded application into a multi-threaded one.
