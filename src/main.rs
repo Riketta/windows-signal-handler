@@ -4,7 +4,7 @@ use std::sync::atomic::AtomicBool;
 static STOP_SIGNAL: AtomicBool = AtomicBool::new(true);
 
 fn main() {
-    let handler_ptr: fn(i32) = signal_handler;
+    let handler_ptr = signal_handler;
     let handler_addr = handler_ptr as sighandler_t;
 
     unsafe {
@@ -18,7 +18,7 @@ fn main() {
 }
 
 /// Windows will execute this function in its own thread, so this effectively turns a single-threaded application into a multi-threaded one.
-fn signal_handler(sig: i32) {
+extern "C" fn signal_handler(sig: i32) {
     println!("Signal: {sig}.");
     STOP_SIGNAL.store(false, std::sync::atomic::Ordering::Relaxed);
 }
